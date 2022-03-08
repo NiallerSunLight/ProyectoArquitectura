@@ -1,5 +1,5 @@
 /*
- Main para los dispositivos:
+ * Main para los dispositivos:
  *      Sensor de Temperatura
  *      Reloj tiempo real RTC
  *      Leds 
@@ -7,16 +7,16 @@
  *		LCD 16x2
  *		I2C
  *		Virtual terminal
- Se utiliza el Microcontrolador PIC 18F4550
+ * Se utiliza el Microcontrolador PIC 18F4550
  */
 
 /*!
 \file   Main.c
 \date   2022-08-03
 \author Jesus Edwin Adrada Ruiz <jesusadrada@unicauca.edu.co> 104617020514
-        Martha Jojhana Villota Hernandez <vmartha@unicauca.edu.co> 
-        Edward Alexander Rivera Urrutia <edwardrivera@unicauca.edu.co>
-        Juan Yela <juanyelaa@unicauca.edu.co>
+        Martha Jojhana Villota Hernández <vmartha@unicauca.edu.co> 104615021435
+        Edward Alexander Rivera Urrutia <edwardrivera@unicauca.edu.co> 104614011298
+        Juan Yela <juanyelaa@unicauca.edu.co> 104617020774
 \brief  Example Controler .
  */
 /*==========================================================================================================
