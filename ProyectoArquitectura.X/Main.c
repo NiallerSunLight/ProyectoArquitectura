@@ -38,7 +38,7 @@ uint8_t year;                              // Variable de 8 bits para los año.
 uint8_t month;                             // Variable de 8 bits para el mes.
 uint8_t day;                               // Variable de 8 bits para el dia.
 uint8_t i;                                 // Variable de 8 bits
-static char buffer_TX[] = "HORA: xx:xx DATE: xx/xx/xx TEMP: xx,xx grados\r\n";    // Arreglo estatico que se imprime en la consola
+static char buffer_TX[] = "TEMP: xx,xx grados HORA: xx:xx:xx DATE: xx/xx/xx\r\n";    // Arreglo estatico que se imprime en la consola
 /*==========================================================================================================
  * Declaracion de funciones.
  ===========================================================================================================*/
@@ -47,7 +47,7 @@ uint8_t BCD_a_Decimal (uint8_t numero);    // Función que convierte un número BC
 void Reloj_Calendario (void);              // Función de visualización de HORA Y FECHA.
 void Establecer_Hora (void);               // Funcion para establecer la HORA Y FECHA.
 void Mostrar_Temperatura (void);           // Funcion para mostrar la temperatura en el LCD.     
-void Imprimir_Cadena (void);               // Imprime los datos de la cadena por consola.
+void Imprimir_Cadena (int, int);               // Imprime los datos de la cadena por consola.
 /*==========================================================================================================
  * Nombre: BCD_a_Decimal.
  * Fucion: Convierte un número BCD a decimal.
@@ -107,19 +107,20 @@ void Reloj_Calendario (void)
     LCD_Goto(1, 2);                         // Cursor en fila 2, columna 1.
     LCD_Print(Date);                        // Imprimimos en pantalla LCD el valor del arreglo "Date".
     
-    buffer_TX[6] = Time[6];                 // Guardamos las decenas de las horas de la posicion 6 del arreglo time en la posicion 6 de la cadena de la consola.
-    buffer_TX[7] = Time[7];                 // Guardamos las unidades de las horas de la posicion 7 del arreglo time en la posicion 7 de la cadena de la consola.
-    buffer_TX[9] = Time[9];                 // Guardamos las decenas de los min de la posicion 9 del arreglo time en la posicion 9 de la cadena de la consola.
-    buffer_TX[10] = Time[10];               // Guardamos las unidades de los min de la posicion 10 del arreglo time en la posicion 10 de la cadena de la consola.
+    buffer_TX[25] = Time[6];                // Guardamos las decenas de las horas de la posicion 6 del arreglo time en la posicion 25 de la cadena de la consola.
+    buffer_TX[26] = Time[7];                // Guardamos las unidades de las horas de la posicion 7 del arreglo time en la posicion 26 de la cadena de la consola.
+    buffer_TX[28] = Time[9];                // Guardamos las decenas de los min de la posicion 9 del arreglo time en la posicion 28 de la cadena de la consola.
+    buffer_TX[29] = Time[10];               // Guardamos las unidades de los min de la posicion 10 del arreglo time en la posicion 29 de la cadena de la consola.
+    buffer_TX[31] = Time[12];               // Guardamos las decenas de los seg de la posicion 12 del arreglo time en la posicion 31 de la cadena de la consola.
+    buffer_TX[32] = Time[13];               // Guardamos las unidades de los min de la posicion 13 del arreglo time en la posicion 32 de la cadena de la consola.
     
-    buffer_TX[18] = Date[6];                // Guardamos las decenas de los dias de la posicion 6 del arreglo date en la posicion 18 de la cadena de la consola.
-    buffer_TX[19] = Date[7];                // Guardamos las unidades de los dias de la posicion 7 del arreglo date en la posicion 19 de la cadena de la consola.
-    buffer_TX[21] = Date[9];                // Guardamos las decenas de los meses de la posicion 9 del arreglo date en la posicion 21 de la cadena de la consola.
-    buffer_TX[22] = Date[10];               // Guardamos las unidades de los meses de la posicion 10 del arreglo date en la posicion 22 de la cadena de la consola.
-    buffer_TX[24] = Date[14];               // Guardamos las decenas de los años de la posicion 14 del arreglo date en la posicion 24 de la cadena de la consola.
-    buffer_TX[25] = Date[15];               // Guardamos las unidades de los años de la posicion 15 del arreglo date en la posicion 25 de la cadena de la consola.
+    buffer_TX[40] = Date[6];                // Guardamos las decenas de los dias de la posicion 6 del arreglo date en la posicion 40 de la cadena de la consola.
+    buffer_TX[41] = Date[7];                // Guardamos las unidades de los dias de la posicion 7 del arreglo date en la posicion 41 de la cadena de la consola.
+    buffer_TX[43] = Date[9];                // Guardamos las decenas de los meses de la posicion 9 del arreglo date en la posicion 43 de la cadena de la consola.
+    buffer_TX[44] = Date[10];               // Guardamos las unidades de los meses de la posicion 10 del arreglo date en la posicion 44 de la cadena de la consola.
+    buffer_TX[46] = Date[14];               // Guardamos las decenas de los años de la posicion 14 del arreglo date en la posicion 46 de la cadena de la consola.
+    buffer_TX[47] = Date[15];               // Guardamos las unidades de los años de la posicion 15 del arreglo date en la posicion 47 de la cadena de la consola.
 }
-
 /*==========================================================================================================
  * Nombre: Establecer_Hora.
  * Fucion: Establece la FECHA y HORA desde el I2C para luego llamar la funcion Reloj_Calendario.
@@ -199,10 +200,10 @@ void Mostrar_Temperatura (void)
         RB4 = 1;                        // Envia 1 logico por el puerto RB5 del PIC18F4550 enciende led rojo.
     }
     
-    buffer_TX[33] = temperatura[0];     // Guardamos las decenas de la temperatura de la posicion 0 del arreglo temperatura en la posicion 33 de la cadena de la consola.
-    buffer_TX[34] = temperatura[1];     // Guardamos las unidades de la temperatura de la posicion 1 del arreglo temperatura en la posicion 34 de la cadena de la consola.
-    buffer_TX[36] = temperatura[3];     // Guardamos el primer valor despues de la coma de la temperatura de la posicion 3 del arreglo temperatura en la posicion 36 de la cadena de la consola.
-    buffer_TX[37] = temperatura[4];     // Guardamos el segundo valor despues de la coma de la temperatura de la posicion 4 del arreglo temperatura en la posicion 37 de la cadena de la consola.
+    buffer_TX[6] = temperatura[0];     // Guardamos las decenas de la temperatura de la posicion 0 del arreglo temperatura en la posicion 6 de la cadena de la consola.
+    buffer_TX[7] = temperatura[1];     // Guardamos las unidades de la temperatura de la posicion 1 del arreglo temperatura en la posicion 7 de la cadena de la consola.
+    buffer_TX[9] = temperatura[3];     // Guardamos el primer valor despues de la coma de la temperatura de la posicion 3 del arreglo temperatura en la posicion 9 de la cadena de la consola.
+    buffer_TX[10] = temperatura[4];     // Guardamos el segundo valor despues de la coma de la temperatura de la posicion 4 del arreglo temperatura en la posicion 10 de la cadena de la consola.
     
     __delay_ms(50);                     // Delay de 50 milisegundos.
 }
@@ -212,9 +213,9 @@ void Mostrar_Temperatura (void)
  * Tipo de variable de entrada: void.
  * Tipo de variable de salida: void.
  ===========================================================================================================*/
-void Imprimir_Cadena(void)
+void Imprimir_Cadena(int a, int b)
 {
-    for (int i = 0; i < 48; i++) 
+    for (int i = a; i < b; i++) 
     {
         // Espera a que el registro de transmisión este disponible o vacio.
         while (!TXSTAbits.TRMT) {
@@ -260,6 +261,7 @@ void main(void)                             // Función Principal.
             Mostrar_Temperatura();          // Call de la funcion Mostrar_Temperatura.
             cont = cont - 5;                // Disminuye el contador en 5.
         }
+        Imprimir_Cadena(0,18);              // Call de la funcion Imprimir_Cadena para la temperatura.
         
         LCD_Clear();                        // Call de la funcion para limpiar la pantalla LCD.
         __delay_ms(500);                    // Delay de 500 milisegundos.
@@ -270,6 +272,7 @@ void main(void)                             // Función Principal.
             Establecer_Hora();              // Call de la funcion Establecer_Hora.
             cont = cont - 5;                // Disminuye el contador en 5.
         }
+        Imprimir_Cadena(18,51);             // Call de la funcion Imprimir_Cadena para la hora y fecha.
         
         LCD_Clear();                        // Call de la funcion para limpiar la pantalla LCD.
         __delay_ms(500);                    // Delay de 500 milisegundos.

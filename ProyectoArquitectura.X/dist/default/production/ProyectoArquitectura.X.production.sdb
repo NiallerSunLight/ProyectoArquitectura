@@ -115,11 +115,13 @@
 [v _BCD_a_Decimal BCD_a_Decimal `(uc  1 e 1 0 ]
 "79
 [v _Reloj_Calendario Reloj_Calendario `(v  1 e 1 0 ]
-"129
+"130
 [v _Establecer_Hora Establecer_Hora `(v  1 e 1 0 ]
-"161
+"162
 [v _Mostrar_Temperatura Mostrar_Temperatura `(v  1 e 1 0 ]
-"228
+"216
+[v _Imprimir_Cadena Imprimir_Cadena `(v  1 e 1 0 ]
+"229
 [v _main main `(v  1 e 1 0 ]
 "37 D:\Universidad\Arquitectura Computacional\Tercer Corte\ProyectoArquitectura\ProyectoArquitectura.X/LCD_librery.h
 [v _RS RS `b  1 e 0 0 ]
@@ -511,32 +513,32 @@
 "39
 [v _day day `uc  1 e 1 0 ]
 "41
-[v _buffer_TX buffer_TX `[48]uc  1 s 48 buffer_TX ]
-"228
+[v _buffer_TX buffer_TX `[51]uc  1 s 51 buffer_TX ]
+"229
 [v _main main `(v  1 e 1 0 ]
 {
-"253
+"254
 [v main@cont cont `i  1 a 2 93 ]
-"277
+"280
 } 0
-"161
+"162
 [v _Mostrar_Temperatura Mostrar_Temperatura `(v  1 e 1 0 ]
 {
-"164
-[v Mostrar_Temperatura@temp temp `f  1 a 4 87 ]
 "165
+[v Mostrar_Temperatura@temp temp `f  1 a 4 87 ]
+"166
 [v Mostrar_Temperatura@value_adc value_adc `i  1 a 2 85 ]
-"163
+"164
 [v Mostrar_Temperatura@temperatura temperatura `[4]uc  1 s 4 temperatura ]
-"208
+"209
 } 0
 "9 C:\Program Files\Microchip\xc8\v2.36\pic\sources\c99\common\nf_sprintf.c
 [v _sprintf sprintf `(i  1 e 2 0 ]
 {
-[u S1336 . 3 `*.2uc 1 buffer 3 0 `*.2Cuc 1 source 3 0 ]
+[u S1339 . 3 `*.2uc 1 buffer 3 0 `*.2Cuc 1 source 3 0 ]
 "13
-[s S1339 _IO_FILE 11 `S1336 1 . 3 0 `i 1 count 2 3 `[2]uc 1 ungetbuf 2 5 `i 1 ungetcnt 2 7 `i 1 limit 2 9 ]
-[v sprintf@f f `S1339  1 a 11 74 ]
+[s S1342 _IO_FILE 11 `S1339 1 . 3 0 `i 1 count 2 3 `[2]uc 1 ungetbuf 2 5 `i 1 ungetcnt 2 7 `i 1 limit 2 9 ]
+[v sprintf@f f `S1342  1 a 11 74 ]
 "12
 [v sprintf@ap ap `[1]*.39v  1 a 2 72 ]
 "9
@@ -549,9 +551,9 @@
 {
 "1393
 [v vfprintf@cfmt cfmt `*.25uc  1 a 2 92 ]
-[s S1371 _IO_FILE 0 ]
+[s S1374 _IO_FILE 0 ]
 "1390
-[v vfprintf@fp fp `*.39S1371  1 p 2 58 ]
+[v vfprintf@fp fp `*.39S1374  1 p 2 58 ]
 [v vfprintf@fmt fmt `*.25Cuc  1 p 2 60 ]
 [v vfprintf@ap ap `*.39*.39v  1 p 2 62 ]
 "1404
@@ -564,9 +566,9 @@
 "694
 [v vfpfcnvrt@ct ct `[3]uc  1 a 3 54 ]
 [v vfpfcnvrt@c c `uc  1 a 1 57 ]
-[s S1371 _IO_FILE 0 ]
+[s S1374 _IO_FILE 0 ]
 "692
-[v vfpfcnvrt@fp fp `*.39S1371  1 p 2 82 ]
+[v vfpfcnvrt@fp fp `*.39S1374  1 p 2 82 ]
 [v vfpfcnvrt@fmt fmt `*.39*.25uc  1 p 2 84 ]
 [v vfpfcnvrt@ap ap `*.39*.39v  1 p 2 86 ]
 "1387
@@ -607,9 +609,9 @@
 "334
 [v efgtoa@mode mode `uc  1 a 1 27 ]
 [v efgtoa@nmode nmode `uc  1 a 1 26 ]
-[s S1371 _IO_FILE 0 ]
+[s S1374 _IO_FILE 0 ]
 "332
-[v efgtoa@fp fp `*.39S1371  1 p 2 70 ]
+[v efgtoa@fp fp `*.39S1374  1 p 2 70 ]
 [v efgtoa@f f `d  1 p 4 72 ]
 [v efgtoa@c c `uc  1 p 1 76 ]
 "525
@@ -644,9 +646,9 @@
 "74
 [v pad@w w `i  1 a 2 25 ]
 [v pad@i i `i  1 a 2 23 ]
-[s S1371 _IO_FILE 0 ]
+[s S1374 _IO_FILE 0 ]
 "72
-[v pad@fp fp `*.39S1371  1 p 2 16 ]
+[v pad@fp fp `*.39S1374  1 p 2 16 ]
 [v pad@buf buf `*.39uc  1 p 2 18 ]
 [v pad@p p `i  1 p 2 20 ]
 "95
@@ -669,18 +671,18 @@
 [v fputs@c c `uc  1 a 1 13 ]
 "8
 [v fputs@s s `*.39Cuc  1 p 2 9 ]
-[u S1336 . 3 `*.2uc 1 buffer 3 0 `*.2Cuc 1 source 3 0 ]
-[s S1339 _IO_FILE 11 `S1336 1 . 3 0 `i 1 count 2 3 `[2]uc 1 ungetbuf 2 5 `i 1 ungetcnt 2 7 `i 1 limit 2 9 ]
-[v fputs@fp fp `*.39S1339  1 p 2 11 ]
+[u S1339 . 3 `*.2uc 1 buffer 3 0 `*.2Cuc 1 source 3 0 ]
+[s S1342 _IO_FILE 11 `S1339 1 . 3 0 `i 1 count 2 3 `[2]uc 1 ungetbuf 2 5 `i 1 ungetcnt 2 7 `i 1 limit 2 9 ]
+[v fputs@fp fp `*.39S1342  1 p 2 11 ]
 "19
 } 0
 "8 C:\Program Files\Microchip\xc8\v2.36\pic\sources\c99\common\nf_fputc.c
 [v _fputc fputc `(i  1 e 2 0 ]
 {
 [v fputc@c c `i  1 p 2 0 ]
-[u S1336 . 3 `*.2uc 1 buffer 3 0 `*.2Cuc 1 source 3 0 ]
-[s S1339 _IO_FILE 11 `S1336 1 . 3 0 `i 1 count 2 3 `[2]uc 1 ungetbuf 2 5 `i 1 ungetcnt 2 7 `i 1 limit 2 9 ]
-[v fputc@fp fp `*.39S1339  1 p 2 2 ]
+[u S1339 . 3 `*.2uc 1 buffer 3 0 `*.2Cuc 1 source 3 0 ]
+[s S1342 _IO_FILE 11 `S1339 1 . 3 0 `i 1 count 2 3 `[2]uc 1 ungetbuf 2 5 `i 1 ungetcnt 2 7 `i 1 limit 2 9 ]
+[v fputc@fp fp `*.39S1342  1 p 2 2 ]
 "24
 } 0
 "7 C:\Program Files\Microchip\xc8\v2.36\pic\sources\c99\common\putch.c
@@ -691,9 +693,9 @@
 "3 C:\Program Files\Microchip\xc8\v2.36\pic\sources\c99\common\floorf.c
 [v _floorf floorf `(f  1 e 4 0 ]
 {
-[u S1507 . 4 `f 1 f 4 0 `ul 1 i 4 0 ]
+[u S1510 . 4 `f 1 f 4 0 `ul 1 i 4 0 ]
 "5
-[v floorf@u u `S1507  1 a 4 66 ]
+[v floorf@u u `S1510  1 a 4 66 ]
 "7
 [v floorf@m m `ul  1 a 4 60 ]
 "6
@@ -701,21 +703,21 @@
 "3
 [v floorf@x x `f  1 p 4 50 ]
 "4
-[v floorf@F526 F526 `S1507  1 s 4 F526 ]
+[v floorf@F526 F526 `S1510  1 s 4 F526 ]
 "27
 } 0
 "4 C:\Program Files\Microchip\xc8\v2.36\pic\sources\c99\common\__fpclassifyf.c
 [v ___fpclassifyf __fpclassifyf `(i  1 e 2 0 ]
 {
-[u S1507 . 4 `f 1 f 4 0 `ul 1 i 4 0 ]
+[u S1510 . 4 `f 1 f 4 0 `ul 1 i 4 0 ]
 "6
-[v ___fpclassifyf@u u `S1507  1 a 4 10 ]
+[v ___fpclassifyf@u u `S1510  1 a 4 10 ]
 "7
 [v ___fpclassifyf@e e `i  1 a 2 8 ]
 "4
 [v ___fpclassifyf@x x `f  1 p 4 0 ]
 "5
-[v ___fpclassifyf@F465 F465 `S1507  1 s 4 F465 ]
+[v ___fpclassifyf@F465 F465 `S1510  1 s 4 F465 ]
 "11
 } 0
 "43 C:\Program Files\Microchip\xc8\v2.36\pic\sources\c99\common\fltol.c
@@ -760,17 +762,17 @@
 "8 C:\Program Files\Microchip\xc8\v2.36\pic\sources\c99\common\sprcmul.c
 [v ___flmul __flmul `(d  1 e 4 0 ]
 {
-[s S1201 . 4 `uc 1 a 1 0 `uc 1 b 1 1 `uc 1 c 1 2 `uc 1 d 1 3 ]
+[s S1204 . 4 `uc 1 a 1 0 `uc 1 b 1 1 `uc 1 c 1 2 `uc 1 d 1 3 ]
 "13
-[s S1206 . 4 `s 1 wordA 2 0 `s 1 wordB 2 2 ]
-[u S1209 . 4 `l 1 i 4 0 `d 1 f 4 0 `S1201 1 fAsBytes 4 0 `S1206 1 fAsWords 4 0 ]
-[v ___flmul@prod prod `S1209  1 a 4 19 ]
+[s S1209 . 4 `s 1 wordA 2 0 `s 1 wordB 2 2 ]
+[u S1212 . 4 `l 1 i 4 0 `d 1 f 4 0 `S1204 1 fAsBytes 4 0 `S1209 1 fAsWords 4 0 ]
+[v ___flmul@prod prod `S1212  1 a 4 19 ]
 "12
 [v ___flmul@grs grs `ul  1 a 4 13 ]
-[s S1277 . 2 `uc 1 a 1 0 `uc 1 b 1 1 ]
+[s S1280 . 2 `uc 1 a 1 0 `uc 1 b 1 1 ]
 "14
-[u S1280 . 2 `s 1 i 2 0 `us 1 n 2 0 `S1277 1 nAsBytes 2 0 ]
-[v ___flmul@temp temp `S1280  1 a 2 23 ]
+[u S1283 . 2 `s 1 i 2 0 `us 1 n 2 0 `S1280 1 nAsBytes 2 0 ]
+[v ___flmul@temp temp `S1283  1 a 2 23 ]
 "10
 [v ___flmul@bexp bexp `uc  1 a 1 18 ]
 "11
@@ -882,6 +884,16 @@
 {
 "145
 } 0
+"216 D:\Universidad\Arquitectura Computacional\Tercer Corte\ProyectoArquitectura\ProyectoArquitectura.X\Main.c
+[v _Imprimir_Cadena Imprimir_Cadena `(v  1 e 1 0 ]
+{
+"218
+[v Imprimir_Cadena@i i `i  1 a 2 5 ]
+"216
+[v Imprimir_Cadena@a a `i  1 p 2 0 ]
+[v Imprimir_Cadena@b b `i  1 p 2 2 ]
+"226
+} 0
 "6 D:\Universidad\Arquitectura Computacional\Tercer Corte\ProyectoArquitectura\ProyectoArquitectura.X\I2C_librery.c
 [v _I2C_Init I2C_Init `(v  1 e 1 0 ]
 {
@@ -900,10 +912,10 @@
 [v ___lldiv@divisor divisor `ul  1 p 4 4 ]
 "30
 } 0
-"129 D:\Universidad\Arquitectura Computacional\Tercer Corte\ProyectoArquitectura\ProyectoArquitectura.X\Main.c
+"130 D:\Universidad\Arquitectura Computacional\Tercer Corte\ProyectoArquitectura\ProyectoArquitectura.X\Main.c
 [v _Establecer_Hora Establecer_Hora `(v  1 e 1 0 ]
 {
-"154
+"155
 } 0
 "79
 [v _Reloj_Calendario Reloj_Calendario `(v  1 e 1 0 ]
@@ -912,7 +924,7 @@
 [v Reloj_Calendario@Time Time `[15]uc  1 s 15 Time ]
 "82
 [v Reloj_Calendario@Date Date `[17]uc  1 s 17 Date ]
-"121
+"123
 } 0
 "7 C:\Program Files\Microchip\xc8\v2.36\pic\sources\c99\common\awmod.c
 [v ___awmod __awmod `(i  1 e 2 0 ]

@@ -6088,7 +6088,7 @@ uint8_t year;
 uint8_t month;
 uint8_t day;
 uint8_t i;
-static char buffer_TX[] = "HORA: xx:xx DATE: xx/xx/xx TEMP: xx,xx grados\r\n";
+static char buffer_TX[] = "TEMP: xx,xx grados HORA: xx:xx:xx DATE: xx/xx/xx\r\n";
 
 
 
@@ -6097,7 +6097,7 @@ uint8_t BCD_a_Decimal (uint8_t numero);
 void Reloj_Calendario (void);
 void Establecer_Hora (void);
 void Mostrar_Temperatura (void);
-void Imprimir_Cadena (void);
+void Imprimir_Cadena (int, int);
 
 
 
@@ -6157,19 +6157,20 @@ void Reloj_Calendario (void)
     LCD_Goto(1, 2);
     LCD_Print(Date);
 
-    buffer_TX[6] = Time[6];
-    buffer_TX[7] = Time[7];
-    buffer_TX[9] = Time[9];
-    buffer_TX[10] = Time[10];
+    buffer_TX[25] = Time[6];
+    buffer_TX[26] = Time[7];
+    buffer_TX[28] = Time[9];
+    buffer_TX[29] = Time[10];
+    buffer_TX[31] = Time[12];
+    buffer_TX[32] = Time[13];
 
-    buffer_TX[18] = Date[6];
-    buffer_TX[19] = Date[7];
-    buffer_TX[21] = Date[9];
-    buffer_TX[22] = Date[10];
-    buffer_TX[24] = Date[14];
-    buffer_TX[25] = Date[15];
+    buffer_TX[40] = Date[6];
+    buffer_TX[41] = Date[7];
+    buffer_TX[43] = Date[9];
+    buffer_TX[44] = Date[10];
+    buffer_TX[46] = Date[14];
+    buffer_TX[47] = Date[15];
 }
-
 
 
 
@@ -6249,10 +6250,10 @@ void Mostrar_Temperatura (void)
         RB4 = 1;
     }
 
-    buffer_TX[33] = temperatura[0];
-    buffer_TX[34] = temperatura[1];
-    buffer_TX[36] = temperatura[3];
-    buffer_TX[37] = temperatura[4];
+    buffer_TX[6] = temperatura[0];
+    buffer_TX[7] = temperatura[1];
+    buffer_TX[9] = temperatura[3];
+    buffer_TX[10] = temperatura[4];
 
     _delay((unsigned long)((50)*(8000000/4000.0)));
 }
@@ -6262,9 +6263,9 @@ void Mostrar_Temperatura (void)
 
 
 
-void Imprimir_Cadena(void)
+void Imprimir_Cadena(int a, int b)
 {
-    for (int i = 0; i < 48; i++)
+    for (int i = a; i < b; i++)
     {
 
         while (!TXSTAbits.TRMT) {
@@ -6310,6 +6311,7 @@ void main(void)
             Mostrar_Temperatura();
             cont = cont - 5;
         }
+        Imprimir_Cadena(0,18);
 
         LCD_Clear();
         _delay((unsigned long)((500)*(8000000/4000.0)));
@@ -6320,6 +6322,7 @@ void main(void)
             Establecer_Hora();
             cont = cont - 5;
         }
+        Imprimir_Cadena(18,51);
 
         LCD_Clear();
         _delay((unsigned long)((500)*(8000000/4000.0)));
