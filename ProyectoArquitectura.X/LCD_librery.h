@@ -42,6 +42,7 @@ void LCD_Goto(uint8_t col, uint8_t row);
 void LCD_PutC(char LCD_Char);
 void LCD_Print(char* LCD_Str);
 void LCD_Begin();
+void LCD_Clear();
 
 void LCD_Write_Nibble(uint8_t n)
 {

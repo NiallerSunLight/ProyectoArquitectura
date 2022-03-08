@@ -46,8 +46,10 @@ uint8_t Decimal_a_BCD (uint8_t numero);    // Función que convierte un número de
 uint8_t BCD_a_Decimal (uint8_t numero);    // Función que convierte un número BCD a decimal.
 void Reloj_Calendario (void);              // Función de visualización de HORA Y FECHA.
 void Establecer_Hora (void);               // Funcion para establecer la HORA Y FECHA.
-void Mostrar_Temperatura (void);           // Funcion para mostrar la temperatura en el LCD.     
-void Imprimir_Cadena (int, int);               // Imprime los datos de la cadena por consola.
+void Mostrar_Temperatura (void);           // Funcion para mostrar la temperatura en el LCD.
+float Obtener_Temperatura (void);          // Obtiene la temperatura del sensor LM35.
+void Imprimir_Cadena (int, int);           // Imprime los datos de la cadena por consola.
+void Encender_Act(float);                  // Enciende los actuadores segun convenga.
 /*==========================================================================================================
  * Nombre: BCD_a_Decimal.
  * Fucion: Convierte un número BCD a decimal.
@@ -151,32 +153,82 @@ void Establecer_Hora (void)
     I2C_Stop();                         // Llamamos a la función Stop.
        
     Reloj_Calendario();                 // Llamamos a la función Reloj_Calendario().
+    
+    Encender_Act(Obtener_Temperatura());                 // Llama la funcion para encender los actuadores.
     __delay_ms(50);                     // Delay de 500 milisegundos.
 }
 /*==========================================================================================================
  * Nombre: Mostrar_Temperatura.
- * Fucion: Covierte el voltaje que recibe el puerto RA0/AN0 a valores digitales y los muestra atravez de la pantalla LCD.
+ * Fucion: Obtiene la temperatura, la muestra atravez de la pantalla LCD y la envia a la funcion Encender_Act.
  * Tipo de variable de entrada: void.
  * Tipo de variable de salida: void.
  ===========================================================================================================*/
 void Mostrar_Temperatura (void)
 {
     static char temperatura [4];        // Arreglo estatico char "temperatura".    
-    float temp = 0;                     // Variable flotante de la temperatura.
-    int value_adc = 0;                  // Variable entera para valor del voltaje arrojado por el lm35.
+    float temp = Obtener_Temperatura(); // Variable flotante de la temperatura.
     
     LCD_Goto(1,1);                      // Cursor en fila 1, columna 1.
     LCD_Print("Temperatura:");          // Imprimimos en la pantalla LCD "Temperatura:".
-    value_adc = ADC_Read(0);            // Guardamos en la variable value_adc en valor del puerto analogico 0.
-    temp = value_adc;                   // Guardamos en la variable temp el valor de value_adc.
-    temp = (temp * 500.0) / 1023.0;     // Usamos la ecuacion para convertirlo el voltaje en lectura de grados.
     sprintf(temperatura,"%.2f",temp);   // Funcion sprintf para guardar en el arreglo temperatura los datos de temp.
     LCD_Goto(6,2);                      // Cursor en fila 2, columna 6.
     LCD_Print(temperatura);             // Imprimimos en la pantalla LCD el valor del arreglo "temperatura".
     LCD_Goto(12,2);                     // Cursor en fila 2, columna 12.
     LCD_Print("C");                     // Imprimimos en la pantalla LCD "C".
+
+    Encender_Act(temp);                 // Llama la funcion para encender los actuadores.
     
-    // Seccion para encender los actuadores, leds, bombillas o dispensador.
+    buffer_TX[6] = temperatura[0];      // Guardamos las decenas de la temperatura de la posicion 0 del arreglo temperatura en la posicion 6 de la cadena de la consola.
+    buffer_TX[7] = temperatura[1];      // Guardamos las unidades de la temperatura de la posicion 1 del arreglo temperatura en la posicion 7 de la cadena de la consola.
+    buffer_TX[9] = temperatura[3];      // Guardamos el primer valor despues de la coma de la temperatura de la posicion 3 del arreglo temperatura en la posicion 9 de la cadena de la consola.
+    buffer_TX[10] = temperatura[4];     // Guardamos el segundo valor despues de la coma de la temperatura de la posicion 4 del arreglo temperatura en la posicion 10 de la cadena de la consola.
+    
+    __delay_ms(50);                     // Delay de 50 milisegundos.
+}
+/*==========================================================================================================
+ * Nombre: Obtener_Temperatura.
+ * Fucion: Obtiene y convierte el voltaje que envia el LM35 por el puerto RA0/AN0.
+ * Tipo de variable de entrada: void.
+ * Parametro de salida: temp.
+ * Tipo de variable de salida: float.
+ ===========================================================================================================*/
+float Obtener_Temperatura (void)
+{
+    float temp = 0;                     // Variable flotante de la temperatura.
+    int value_adc = 0;                  // Variable entera para valor del voltaje arrojado por el lm35.
+
+    value_adc = ADC_Read(0);            // Guardamos en la variable value_adc en valor del puerto analogico 0.
+    temp = value_adc;                   // Guardamos en la variable temp el valor de value_adc.
+    temp = (temp * 500.0) / 1023.0;     // Usamos la ecuacion para convertirlo el voltaje en lectura de grados.
+    
+    return temp;                        // Retorna la temperatura.
+}
+/*==========================================================================================================
+ * Nombre: Imprimir_Cadena.
+ * Fucion: Imprime los datos de temperatura, fecha y hora en la consola de salida.
+ * Tipo de variable de entrada: void.
+ * Tipo de variable de salida: void.
+ ===========================================================================================================*/
+void Imprimir_Cadena(int a, int b)
+{
+    for (int i = a; i < b; i++) 
+    {
+        // Espera a que el registro de transmisión este disponible o vacio.
+        while (!TXSTAbits.TRMT) {
+        }
+        // Escribe el dato que se enviará a través de TX.
+            TXREG = buffer_TX[i];
+    }
+}
+/*==========================================================================================================
+ * Nombre: Encender_Act.
+ * Fucion: Recibe la temperatura para evaluarla y decidir que actuadores encender.
+ * Parametro de entrada: temp.
+ * Tipo de variable de entrada: float.
+ * Tipo de variable de salida: void.
+ ===========================================================================================================*/
+void Encender_Act(float temp)
+{
     if(temp>=32 && temp<=34.9)          // Condicional para verificar la temperatura correcta.
     {
         RB2 = 0;                        // Envia 0 logico por el puerto RB2 del PIC18F4550 apaga dispensador.
@@ -199,32 +251,9 @@ void Mostrar_Temperatura (void)
         RB3 = 0;                        // Envia 1 logico por el puerto RB5 del PIC18F4550 apaga led verde.
         RB4 = 1;                        // Envia 1 logico por el puerto RB5 del PIC18F4550 enciende led rojo.
     }
-    
-    buffer_TX[6] = temperatura[0];     // Guardamos las decenas de la temperatura de la posicion 0 del arreglo temperatura en la posicion 6 de la cadena de la consola.
-    buffer_TX[7] = temperatura[1];     // Guardamos las unidades de la temperatura de la posicion 1 del arreglo temperatura en la posicion 7 de la cadena de la consola.
-    buffer_TX[9] = temperatura[3];     // Guardamos el primer valor despues de la coma de la temperatura de la posicion 3 del arreglo temperatura en la posicion 9 de la cadena de la consola.
-    buffer_TX[10] = temperatura[4];     // Guardamos el segundo valor despues de la coma de la temperatura de la posicion 4 del arreglo temperatura en la posicion 10 de la cadena de la consola.
-    
-    __delay_ms(50);                     // Delay de 50 milisegundos.
 }
 /*==========================================================================================================
- * Nombre: Imprimir_Cadena.
- * Fucion: Imprime los datos de temperatura, fecha y hora en la consola de salida.
- * Tipo de variable de entrada: void.
- * Tipo de variable de salida: void.
- ===========================================================================================================*/
-void Imprimir_Cadena(int a, int b)
-{
-    for (int i = a; i < b; i++) 
-    {
-        // Espera a que el registro de transmisión este disponible o vacio.
-        while (!TXSTAbits.TRMT) {
-        }
-        // Escribe el dato que se enviará a través de TX.
-            TXREG = buffer_TX[i];
-    }
-}
-/*==========================================================================================================
+ * Main del proyecto.
  ===========================================================================================================*/
 void main(void)                             // Función Principal.
 {

@@ -5817,6 +5817,7 @@ void LCD_Goto(uint8_t col, uint8_t row);
 void LCD_PutC(char LCD_Char);
 void LCD_Print(char* LCD_Str);
 void LCD_Begin();
+void LCD_Clear();
 
 void LCD_Write_Nibble(uint8_t n)
 {
@@ -6097,7 +6098,9 @@ uint8_t BCD_a_Decimal (uint8_t numero);
 void Reloj_Calendario (void);
 void Establecer_Hora (void);
 void Mostrar_Temperatura (void);
+float Obtener_Temperatura (void);
 void Imprimir_Cadena (int, int);
+void Encender_Act(float);
 
 
 
@@ -6201,6 +6204,8 @@ void Establecer_Hora (void)
     I2C_Stop();
 
     Reloj_Calendario();
+
+    Encender_Act(Obtener_Temperatura());
     _delay((unsigned long)((50)*(8000000/4000.0)));
 }
 
@@ -6212,21 +6217,69 @@ void Establecer_Hora (void)
 void Mostrar_Temperatura (void)
 {
     static char temperatura [4];
-    float temp = 0;
-    int value_adc = 0;
+    float temp = Obtener_Temperatura();
 
     LCD_Goto(1,1);
     LCD_Print("Temperatura:");
-    value_adc = ADC_Read(0);
-    temp = value_adc;
-    temp = (temp * 500.0) / 1023.0;
     sprintf(temperatura,"%.2f",temp);
     LCD_Goto(6,2);
     LCD_Print(temperatura);
     LCD_Goto(12,2);
     LCD_Print("C");
 
+    Encender_Act(temp);
 
+    buffer_TX[6] = temperatura[0];
+    buffer_TX[7] = temperatura[1];
+    buffer_TX[9] = temperatura[3];
+    buffer_TX[10] = temperatura[4];
+
+    _delay((unsigned long)((50)*(8000000/4000.0)));
+}
+
+
+
+
+
+
+
+float Obtener_Temperatura (void)
+{
+    float temp = 0;
+    int value_adc = 0;
+
+    value_adc = ADC_Read(0);
+    temp = value_adc;
+    temp = (temp * 500.0) / 1023.0;
+
+    return temp;
+}
+
+
+
+
+
+
+void Imprimir_Cadena(int a, int b)
+{
+    for (int i = a; i < b; i++)
+    {
+
+        while (!TXSTAbits.TRMT) {
+        }
+
+            TXREG = buffer_TX[i];
+    }
+}
+
+
+
+
+
+
+
+void Encender_Act(float temp)
+{
     if(temp>=32 && temp<=34.9)
     {
         RB2 = 0;
@@ -6249,31 +6302,8 @@ void Mostrar_Temperatura (void)
         RB3 = 0;
         RB4 = 1;
     }
-
-    buffer_TX[6] = temperatura[0];
-    buffer_TX[7] = temperatura[1];
-    buffer_TX[9] = temperatura[3];
-    buffer_TX[10] = temperatura[4];
-
-    _delay((unsigned long)((50)*(8000000/4000.0)));
 }
 
-
-
-
-
-
-void Imprimir_Cadena(int a, int b)
-{
-    for (int i = a; i < b; i++)
-    {
-
-        while (!TXSTAbits.TRMT) {
-        }
-
-            TXREG = buffer_TX[i];
-    }
-}
 
 
 void main(void)
